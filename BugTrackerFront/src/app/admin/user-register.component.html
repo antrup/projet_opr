@@ -1,0 +1,69 @@
+<div class="user-register">
+  <h1>Register an user</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- server error printer -->
+    <p>
+      <mat-error *ngIf="result && !result.success">
+        <strong>ERROR</strong>: {{result.message}}
+      </mat-error>
+    </p>
+
+    <!-- username -->
+    <mat-form-field>
+      <mat-label>Username:</mat-label>
+      <input matInput formControlName="username" required
+             placeholder="username">
+      <mat-error *ngFor="let error of getErrors(form.get('username')!,
+              'Username',
+                 {'minlength' : 'requires at least 4 character' ,
+                  'maxlength' : 'exceeds maximum of 10 character' })">
+        {{error}}
+      </mat-error>
+      <mat-hint>4 to 10 characters (a-z 0-9 -_)</mat-hint>
+    </mat-form-field>
+
+    <!-- email -->
+    <mat-form-field>
+      <mat-label>Email:</mat-label>
+      <input matInput formControlName="email" required
+             placeholder="email" type="email">
+      <mat-error *ngFor="let error of getErrors(form.get('email')!,
+              'Email')">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- password -->
+    <mat-form-field>
+      <mat-label>Password:</mat-label>
+      <input matInput formControlName="password" required
+             placeholder="password" type="password">
+      <mat-error *ngFor="let error of getErrors(form.get('password')!,
+              'Password',
+                 { 'pattern' : 'requires at least one lowercase, one uppercase, one digit, one special character (@$!%*#?&)',
+                  'minlength' : 'requires at least 7 character' ,
+                  'maxlength' : 'exceeds maximum of 15 character' })">
+        {{error}}
+      </mat-error>
+      <mat-hint>7 to 15 characters - At least one lowercase, one uppercase, one digit, one special character (@$!%*#?&)</mat-hint>
+    </mat-form-field>
+
+    <!-- Dev role -->
+    <mat-checkbox formControlName="roleDev">Dev</mat-checkbox>
+
+    <!-- Admin role -->
+    <mat-checkbox formControlName="roleAdmin">Admin</mat-checkbox>
+
+    <div>
+      <button mat-flat-button color="primary"
+              type="submit" [disabled]="!form.valid">
+        Save
+      </button>
+      <button mat-flat-button color="secondary"
+              [routerLink]="['/admin']">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

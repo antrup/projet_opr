@@ -1,0 +1,29 @@
+<div class="application-add">
+  <h1>Add application</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Name -->
+    <mat-form-field hintLabel="Max 15 characters">
+      <mat-label>Name:</mat-label>
+      <input matInput formControlName="name" required
+             placeholder="Application name">
+      <mat-error *ngFor="let error of getErrors(form.get('name')!,
+              'Application name')">
+        {{error}}
+      </mat-error>
+      <mat-hint align="end">{{this.form.controls["name"].value.length || 0}}/15</mat-hint>
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button color="primary"
+              type="submit" [disabled]="!form.valid">
+        Save
+      </button>
+      <button mat-flat-button color="secondary"
+              [routerLink]="['/admin']">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+

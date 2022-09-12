@@ -1,0 +1,64 @@
+<div class="ticket-edit">
+  <h1>New ticket</h1>
+  <p *ngIf="!ticketService.applications"><em>No available application - please contact your administrator</em></p>
+  <form [formGroup]="form" *ngIf="ticketService.applications" (ngSubmit)="onSubmit()">
+
+    <!-- Subject -->
+    <mat-form-field hintLabel="Max 100 characters">
+      <mat-label>Subject</mat-label>
+      <input matInput formControlName="subject" required
+             placeholder="Ticket subject">
+      <mat-error *ngFor="let error of getErrors(form.get('subject')!,
+              'Subject')">
+        {{error}}
+      </mat-error>
+      <mat-hint align="end">{{this.form.controls["subject"].value.length || 0}}/100</mat-hint>
+    </mat-form-field>
+
+
+    <!-- Application -->
+    <mat-form-field>
+      <mat-label>Select an application</mat-label>
+      <mat-select id="application" formControlName="application">
+        <mat-option *ngFor="let application of ticketService.applications"
+                    [value]="application.id">
+          {{application.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngFor="let error of getErrors(form.get('application')!,
+              'Application')">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Description -->
+    <mat-form-field hintLabel="Max 3000 characters">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" required
+                placeholder="Description" class="description">
+      </textarea>
+      <mat-error *ngFor="let error of getErrors(form.get('description')!,
+              'Description')">
+        {{error}}
+      </mat-error>
+      <mat-hint align="end">{{this.form.controls["description"].value.length || 0}}/3000</mat-hint>
+    </mat-form-field>
+
+    <!-- Screenshot -->
+    <mat-label class="other-input-label">Screenshot</mat-label>
+    <input type="file" accept=".jpg" (change)="onFileChange($event)" #uploadField />
+    <mat-hint class="other-input-hint">JPG format - Max 2MB</mat-hint>
+
+    <div>
+      <button mat-flat-button color="primary"
+              type="submit" [disabled]="!form.valid">
+        Save
+      </button>
+      <button mat-flat-button color="secondary"
+              [routerLink]="['/']">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+

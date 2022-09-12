@@ -1,0 +1,33 @@
+<mat-tab-group>
+  <!--Ticket all-->
+  <mat-tab label="All tickets">
+    <div class="card-container">
+      <!--Stats-->
+      <mat-card title="TicketsStats" class="statCard"><app-ticket-stats></app-ticket-stats></mat-card>
+      <!--Table-->
+      <mat-card title="Tickets" class="tableCard"><app-tickets></app-tickets></mat-card>
+    </div>
+  </mat-tab>
+
+  <!--Ticket created by the user-->
+  <mat-tab label="Created">
+      <div class="card-container">
+        <!--Stats-->
+        <mat-card title="MyTicketsStats" class="statCard"><app-mytickets-stats></app-mytickets-stats></mat-card>
+        <!--Table-->
+        <mat-card title="Tickets" class="tableCard"><app-tickets-by-creator></app-tickets-by-creator></mat-card>
+      </div>
+  </mat-tab>
+
+  <!--Ticket taken over by the user (only for Dev user)-->
+
+  <mat-tab *ngIf="isDev" label="Owned">
+      <div class="card-container">
+        <!--Stats-->
+        <mat-card title="MyTicketsStats" class="statCard"><app-tickets-owned-stats></app-tickets-owned-stats></mat-card>
+        <!--Table-->
+        <mat-card title="Tickets" class="tableCard"><app-tickets-by-owner></app-tickets-by-owner></mat-card>
+      </div>
+  </mat-tab>
+
+</mat-tab-group>

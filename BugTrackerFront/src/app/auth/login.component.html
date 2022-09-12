@@ -1,0 +1,49 @@
+<div class="login">
+  <h1>Login</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-error *ngIf="loginResult && !loginResult.success">
+        <strong>ERROR</strong>: {{loginResult.message}}
+      </mat-error>
+    </p>
+
+    <!-- Username -->
+    <mat-form-field>
+      <mat-label>Username:</mat-label>
+      <input matInput formControlName="username" required
+             placeholder="Insert username">
+      <mat-error *ngFor="let error of getErrors(form.get('username')!,
+              'Username',
+                 { 'pattern' : 'does not comply with username policy',
+                  'minlength' : 'is invalid' ,
+                  'maxlength' : 'is invalid' })">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field>
+      <mat-label>Password:</mat-label>
+      <input matInput type="password" formControlName="password" required
+             placeholder="Insert Password">
+      <mat-error *ngFor="let error of getErrors(form.get('password')!,
+              'Password',
+                  { 'pattern' : 'does not comply with password policy',
+                  'minlength' : 'is invalid' ,
+                  'maxlength' : 'is invalid' })">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button color="primary"
+              type="submit" [disabled]="!form.valid">
+        Login
+      </button>
+      <button mat-flat-button color="secondary"
+              [routerLink]="['/']">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

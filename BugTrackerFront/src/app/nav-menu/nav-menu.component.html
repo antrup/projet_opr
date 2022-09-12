@@ -1,0 +1,28 @@
+<header>
+  <mat-toolbar color="primary">
+    <!-- All loggedin user -->
+    <button *ngIf="isLoggedIn" mat-icon-button [routerLink]="['/']">
+      <mat-icon>
+        home
+      </mat-icon>
+    </button>
+    <a *ngIf="isLoggedIn" mat-flat-button color="primary" [routerLink]="['/new_ticket']">
+      New ticket
+    </a>
+    <span class="separator"></span>
+
+    <!-- Admin -->
+    <a *ngIf="isLoggedIn && isAdmin" mat-flat-button color="primary" [routerLink]="['/admin']">
+      Admin
+    </a>
+
+    <!-- Login or logout depending on user authentification status -->
+    <a *ngIf="!isLoggedIn" mat-flat-button color="primary" [routerLink]="['/login']">
+      Login
+    </a>
+    <a *ngIf="isLoggedIn" mat-flat-button color="primary"
+       (click)="onLogout()">
+      Logout
+    </a>
+  </mat-toolbar>
+</header>

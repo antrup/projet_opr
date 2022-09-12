@@ -1,0 +1,22 @@
+mat-form-field, input {
+  display: block;
+  margin: 10px 0;
+}
+
+.other-input-label {
+  color: rgba(0,0,0,.54);
+  display: block;
+  margin: 20px 0;
+}
+
+.other-input-hint {
+  font-size: 75%;
+}
+
+.description {
+  height: 7em;
+}
+
+button {
+  margin-top: 2%;
+}
