@@ -1,20 +1,38 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Ticket } from './interfaces/ticket';
-import { TicketService, TICKETSPATH } from './ticket.service';
+import { APPLICATIONSERVICE, TicketService, TICKETSPATH } from './ticket.service';
 import { BaseTableComponent } from '../base-table.component';
-import { AuthService } from '../auth/auth.service';
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { Application } from '../shared-services/interfaces/application';
+import { newApplication } from '../admin/interfaces/newApplication';
+import { ITicketService } from './Iticket-service';
+import { IAuthService } from '../auth/Iauth-service';
 
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.css'],
-  providers: [TicketService, {
+  providers: [{
+    provide: ITicketService,
+    useClass: TicketService
+  },
+  {
     provide: TICKETSPATH,
     useValue: 'api/Tickets/',
-  },],
+  },
+  {
+    provide: APPLICATIONSERVICE,
+    useClass: DataService<Application, number, newApplication>,
+  },
+  {
+    provide: DATAPATH,
+    useValue: 'api/Applications/',
+  }
+  ],
 })
+
 export class TicketsComponent extends BaseTableComponent<Ticket> implements OnInit {
   applicationsMap!: Map<number, string>;
 
@@ -28,8 +46,8 @@ export class TicketsComponent extends BaseTableComponent<Ticket> implements OnIn
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public ticketService: TicketService,
-              public authService: AuthService  ) {
+  constructor(@Inject(ITicketService) public ticketService: ITicketService,
+              public authService: IAuthService) {
     super();
 }
  

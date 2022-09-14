@@ -1,41 +1,26 @@
-import { Inject, Injectable, InjectionToken, NgModule } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ApiResult, BaseService } from '../base.service';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { DataService } from '../shared-services/data.service';
 import { Ticket } from './interfaces/ticket';
 import { Application } from '../shared-services/interfaces/application';
-import { ApplicationService } from '../shared-services/application.service';
+import { newApplication } from '../admin/interfaces/newApplication';
+import { IDataService } from '../shared-services/Idata-service';
+import { ITicketService } from './Iticket-service';
 
 export const TICKETSPATH = new InjectionToken<string>('path');
+export const APPLICATIONSERVICE = new InjectionToken<IDataService<Application, number, newApplication>>('application service');
 
 @Injectable()
-export class TicketService extends BaseService<Ticket> {
+export class TicketService extends DataService<Ticket, number, FormData> implements ITicketService {
 
   applications?: Application[];
 
   constructor(
     @Inject(TICKETSPATH) path: string,
     http: HttpClient,
-    private applicationService: ApplicationService) {
+    @Inject(APPLICATIONSERVICE) private applicationService: IDataService<Application, number, newApplication>) {
     super(path, http,)
     this.loadApplications();
-  }
-
-  // override methods to apply stricter typing
-  override get(id: number): Observable<Ticket> {
-    return super.get(id);
-  }
-
-  override delete(id: number): Observable<Object> {
-    return super.delete(id);
-  }
-
-  override put(item: Ticket, id: number): Observable<Ticket> {
-    return super.put(item, id);
-  }
-
-  override post(item: FormData): Observable<Ticket> {
-    return super.post(item);
   }
 
   // take over a ticket (register as "owner")

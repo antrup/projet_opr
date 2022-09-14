@@ -1,21 +1,37 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { newApplication } from '../admin/interfaces/newApplication';
 import { AuthService } from '../auth/auth.service';
-import { UserService } from '../shared-services/user.service';
+import { IAuthService } from '../auth/Iauth-service';
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { Application } from '../shared-services/interfaces/application';
 import { Ticket } from './interfaces/ticket';
-import { TicketService, TICKETSPATH } from './ticket.service';
+import { ITicketService } from './Iticket-service';
+import { APPLICATIONSERVICE, TicketService, TICKETSPATH } from './ticket.service';
 
 @Component({
   selector: 'app-ticket-detail',
   templateUrl: './ticket-detail.component.html',
   styleUrls: ['./ticket-detail.component.css'],
-  providers: [TicketService, {
+  providers: [{
+    provide: ITicketService,
+    useClass: TicketService
+  },
+  {
     provide: TICKETSPATH,
     useValue: 'api/Tickets/',
-  },],
+  },
+  {
+    provide: APPLICATIONSERVICE,
+    useClass: DataService<Application, number, newApplication>,
+  },
+  {
+    provide: DATAPATH,
+    useValue: 'api/Applications/',
+  }]
 })
+
 export class TicketDetailComponent implements OnInit {
 
   title?: string;
@@ -37,10 +53,8 @@ export class TicketDetailComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
-    private httpclient: HttpClient,
-    public authService: AuthService,
-    public ticketService: TicketService,
-    public userService: UserService) { }
+    public authService: IAuthService,
+    @Inject(ITicketService) public ticketService: ITicketService) { }
 
   ngOnInit(): void {
     this.isDev = this.authService.isDevUser();
@@ -71,23 +85,9 @@ export class TicketDetailComponent implements OnInit {
 
       // update the form with the ticket value
       this.form.patchValue(this.ticket);
-
-      // get creator username
-      this.creatorUserName = await this.getUserName(this.form.controls['creatorId'].value);
-
-      // get owner username, if any
-      if (this.form.controls["ownerId"].value != null)
-        this.ownerUserName = await this.getUserName(this.form.controls['ownerId'].value);
     });
   }
 
-  async getUserName(id: string): Promise<string> {
-    var user = await this.userService.get(id).toPromise();
-    if (user)
-      return user.userName;
-    else
-      return "User not found";
-  }
 
    // take over a ticket (register as "owner")
   takeTicket() {

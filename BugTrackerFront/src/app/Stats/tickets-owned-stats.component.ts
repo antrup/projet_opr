@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Stats } from './interfaces/stats';
-import { StatsService } from './stats.service';
+import { IStatsService } from './Istats-service';
 
 @Component({
   selector: 'app-tickets-owned-stats',
@@ -12,7 +12,7 @@ export class TicketsOwnedStatsComponent implements OnInit {
 
   stats?: Stats;
 
-  constructor(public statsService: StatsService) { }
+  constructor(public statsService: IStatsService) { }
 
   ngOnInit(): void {
     this.statsService.get().subscribe(result => this.stats = result);

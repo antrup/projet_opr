@@ -35,6 +35,10 @@ import { MyticketsStatsComponent } from './Stats/mytickets-stats.component';
 import { TicketsByCreatorComponent } from './tickets/tickets-by-creator.component';
 import { TicketsByOwnerComponent } from './tickets/tickets-by-owner.component';
 import { TicketsOwnedStatsComponent } from './Stats/tickets-owned-stats.component';
+import { IAuthService } from './auth/Iauth-service';
+import { AuthService } from './auth/auth.service';
+import { IStatsService } from './Stats/Istats-service';
+import { StatsService } from './Stats/stats.service';
 
 
 @NgModule({
@@ -72,7 +76,16 @@ import { TicketsOwnedStatsComponent } from './Stats/tickets-owned-stats.componen
     MatButtonModule,
     LayoutModule,
   ],
-  providers: [{
+  providers: [
+    {
+      provide: IAuthService,
+      useClass: AuthService
+    },
+    {
+      provide: IStatsService,
+      useClass: StatsService
+    },
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true

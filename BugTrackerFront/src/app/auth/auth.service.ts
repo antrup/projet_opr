@@ -4,11 +4,12 @@ import { Observable, Subject, tap } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { LoginRequest } from './interfaces/login-request';
 import { LoginResult } from './interfaces/login-result';
+import { IAuthService } from './Iauth-service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements IAuthService {
 
   constructor(protected http: HttpClient) { }
 

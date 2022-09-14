@@ -3,7 +3,8 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ApiResult, BaseService } from './base.service';
+import { ApiResult, DataService } from './shared-services/data.service';
+import { IDataService } from './shared-services/Idata-service';
 
 @Component({
   template: ''
@@ -19,7 +20,7 @@ export abstract class BaseTableComponent<T> {
     paginator: MatPaginator,
     defaultSortColumn: string,
     defaultSortOrder: string,
-    dataservice: BaseService<T>) {
+    dataservice: IDataService<T, any, any>) {
     var sortColumn = (sort)
       ? sort.active
       : defaultSortColumn;

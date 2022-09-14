@@ -1,24 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseFormComponent } from '../base-form.component';
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { IDataService } from '../shared-services/Idata-service';
+import { UserInfo } from '../shared-services/interfaces/userinfo';
 import { Result } from './interfaces/result';
 import { UserRegistration } from './interfaces/userRegistration';
-import { UserResgitrationService } from './user-resgistration.service';
 
 @Component({
   selector: 'app-user-register',
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.css'],
-  providers: [UserResgitrationService]
+  providers: [{
+    provide: IDataService,
+    useClass: DataService<UserInfo, string, UserRegistration>,
+  },
+  {
+    provide: DATAPATH,
+    useValue: 'api/Users/',
+  },],
 })
+
 export class UserRegisterComponent extends BaseFormComponent implements OnInit {
 
   result!: Result;
 
   // Router and UserResgitrationService injection
   constructor(
-    private userResgistrationService: UserResgitrationService,
+    @Inject(IDataService) private userResgistrationService: IDataService<UserInfo, string, UserRegistration>,
     private router: Router)
   {
     super()

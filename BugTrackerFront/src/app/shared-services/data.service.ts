@@ -1,12 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
+import { IDataService } from './Idata-service';
 
-export abstract class BaseService<T> {
+export const DATAPATH = new InjectionToken<string>('path');
+
+@Injectable()
+export class DataService<T, IDTYPE, POSTTYPE> implements IDataService<T, IDTYPE, POSTTYPE> {
 
   protected _apiPath: string;
 
-  constructor(apiPath:string,
+  constructor(@Inject(DATAPATH) apiPath:string,
     protected http: HttpClient) {
     this._apiPath = apiPath;
   }
@@ -37,22 +42,22 @@ export abstract class BaseService<T> {
     return (result?.data);
   }
 
-  get(id: any): Observable<T> {
+  get(id: IDTYPE): Observable<T> {
     var url = this.getUrl(this._apiPath + id);
     return this.http.get<T>(url);
   }
 
-  put(item: T, id: any): Observable<T> {
+  put(item: T, id: IDTYPE): Observable<T> {
     var url = this.getUrl(this._apiPath + id);
     return this.http.put<T>(url, item);
   }
 
-  post(item: any): Observable<any> {
+  post(item: POSTTYPE): Observable<any> {
     var url = this.getUrl(this._apiPath);
     return this.http.post(url, item);
   }
 
-  delete(id: any): Observable<any> {
+  delete(id: IDTYPE): Observable<any> {
     var url = this.getUrl(this._apiPath + id);
     return this.http.delete(url);
   }

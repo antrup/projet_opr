@@ -1,17 +1,34 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { newApplication } from '../admin/interfaces/newApplication';
 import { BaseFormComponent } from '../base-form.component';
-import { TicketService, TICKETSPATH } from './ticket.service';
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { Application } from '../shared-services/interfaces/application';
+import { ITicketService } from './Iticket-service';
+import { APPLICATIONSERVICE, TicketService, TICKETSPATH } from './ticket.service';
 
 @Component({
   selector: 'app-ticket-create',
   templateUrl: './ticket-create.component.html',
   styleUrls: ['./ticket-create.component.css'],
-  providers: [TicketService, {
+  providers: [{
+    provide: ITicketService,
+    useClass: TicketService
+  },
+  {
     provide: TICKETSPATH,
     useValue: 'api/Tickets/',
-  },],
+  },
+  {
+    provide: APPLICATIONSERVICE,
+    useClass: DataService<Application, number, newApplication>,
+  },
+  {
+    provide: DATAPATH,
+    useValue: 'api/Applications/',
+  }
+  ],
 })
 export class TicketCreateComponent extends BaseFormComponent implements OnInit {
 
@@ -21,7 +38,7 @@ export class TicketCreateComponent extends BaseFormComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public ticketService: TicketService) {
+    @Inject(ITicketService) public ticketService: ITicketService) {
     super();
 }
 

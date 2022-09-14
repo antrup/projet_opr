@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { IAuthService } from '../auth/Iauth-service';
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  styleUrls: ['./nav-menu.component.css'],
 })
 export class NavMenuComponent implements OnInit {
 
@@ -14,7 +13,7 @@ export class NavMenuComponent implements OnInit {
   isAdmin: boolean = false;
 
   // Subscribe to user status observables
-  constructor(public authService: AuthService,
+  constructor(public authService: IAuthService,
     private router: Router) {
     this.authService.authStatus
       .subscribe(result => {

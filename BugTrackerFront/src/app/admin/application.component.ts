@@ -1,15 +1,29 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Application } from '../shared-services/interfaces/application';
 import { BaseTableComponent } from '../base-table.component';
-import { ApplicationService } from '../shared-services/application.service';
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { newApplication } from './interfaces/newApplication';
+import { IDataService } from '../shared-services/Idata-service';
+import { UserInfo } from '../shared-services/interfaces/userinfo';
 
 @Component({
   selector: 'app-application',
   templateUrl: './application.component.html',
-  styleUrls: ['./application.component.css']
+  styleUrls: ['./application.component.css'],
+  providers: [
+    {
+    provide: IDataService,
+    useClass: DataService<Application, number, newApplication>,
+  },
+
+    {
+    provide: DATAPATH,
+    useValue: 'api/Applications/',
+  },],
 })
+
 export class ApplicationComponent extends BaseTableComponent<Application> implements AfterViewInit {
 
   // Table default parameters
@@ -23,7 +37,7 @@ export class ApplicationComponent extends BaseTableComponent<Application> implem
   @ViewChild(MatSort) sort!: MatSort;
 
   // ApplicationService injection
-  constructor(public applicationService: ApplicationService) {
+  constructor(@Inject(IDataService) public applicationService: IDataService<Application, number, newApplication>) {
     super();
   }
 

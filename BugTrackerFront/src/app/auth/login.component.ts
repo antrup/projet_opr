@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseFormComponent } from '../base-form.component';
-import { AuthService } from './auth.service';
 import { LoginRequest } from './interfaces/login-request';
 import { LoginResult } from './interfaces/login-result';
 import { Router } from '@angular/router';
+import { IAuthService } from './Iauth-service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent extends BaseFormComponent implements OnInit {
   // Router and AuthService injection
   constructor(
     private router: Router,
-    private authService: AuthService) {
+    private authService: IAuthService) {
     super();
   }
   ngOnInit() {

@@ -1,16 +1,26 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { UserInfo } from '../shared-services/interfaces/userinfo';
-import { UserService } from '../shared-services/user.service';
 import { BaseTableComponent } from '../base-table.component';
-
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { UserRegistration } from './interfaces/userRegistration';
+import { IDataService } from '../shared-services/Idata-service';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.css'],
+  providers: [{
+    provide: IDataService,
+    useClass: DataService<UserInfo, string, UserRegistration>,
+  },
+  {
+    provide: DATAPATH,
+    useValue: 'api/Users/',
+  },],
 })
+
 export class UsersComponent extends BaseTableComponent<UserInfo> implements AfterViewInit {
 
   // Table default parameters
@@ -24,7 +34,7 @@ export class UsersComponent extends BaseTableComponent<UserInfo> implements Afte
   @ViewChild(MatSort) sort!: MatSort;
 
   // UserService injection
-  constructor(public userService: UserService) {
+  constructor(@Inject(IDataService) public userService: IDataService<UserInfo, string, UserRegistration>) {
     super();
   }
 

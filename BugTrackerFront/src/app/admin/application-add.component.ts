@@ -1,22 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseFormComponent } from '../base-form.component';
-import { ApplicationService } from '../shared-services/application.service';
+import { DATAPATH, DataService } from '../shared-services/data.service';
+import { IDataService } from '../shared-services/Idata-service';
 import { Application } from '../shared-services/interfaces/application';
+import { newApplication } from './interfaces/newApplication';
 
 
 @Component({
   selector: 'app-application-add',
   templateUrl: './application-add.component.html',
-  styleUrls: ['./application-add.component.css']
+  styleUrls: ['./application-add.component.css'],
+  providers: [
+    {
+      provide: IDataService,
+      useClass: DataService<Application, number, newApplication>,
+    },
+
+    {
+      provide: DATAPATH,
+      useValue: 'api/Applications/',
+    },],
 })
+
 export class ApplicationAddComponent extends BaseFormComponent implements OnInit {
 
   // Router and ApplicationService injection
   constructor(
     private router: Router,
-    private applicationService: ApplicationService) {
+    @Inject(IDataService) private applicationService: IDataService<Application, number, newApplication>) {
     super();
 }
 
@@ -31,7 +44,7 @@ export class ApplicationAddComponent extends BaseFormComponent implements OnInit
   }
 
   onSubmit() {
-    let application: Application = { name: this.form.controls["name"].value };
+    let application: newApplication = { name: this.form.controls["name"].value };
 
     this.applicationService
       .post(application)

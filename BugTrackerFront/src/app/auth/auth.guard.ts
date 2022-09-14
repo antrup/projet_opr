@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { IAuthService } from './Iauth-service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
  // guard based on authentification status
 export class AuthGuard implements CanActivate {
   constructor(
-    private authService: AuthService,
+    private authService: IAuthService,
     private router: Router
   ) {
   }
