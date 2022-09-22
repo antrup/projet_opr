@@ -19,7 +19,7 @@
 - ID dev ayant pris en charge le ticket
 
 ### Roles : 
-- Utilisateur : création de ticket 
+- Utilisateur : création de tickets 
 - Dev : modification du statut des tickets / suppression des tickets
 - Admin : gestion des utilisateurs et de la liste des applications
  
