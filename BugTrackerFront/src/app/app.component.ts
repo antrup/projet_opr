@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { IAuthService } from './auth/Iauth-service';
+import { IAuthService } from './shared/auth/Iauth-service';
 
 @Component({
   selector: 'app-root',
